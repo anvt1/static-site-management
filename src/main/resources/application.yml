@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ssm
+    username: ssm
+    password: ssm
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+ssm:
+  storage:
+    baseDir: data
+  upload:
+    maxZipBytes: 52428800 # 50MB
+    maxFileCount: 5000
+    maxExtractedBytes: 209715200 # 200MB

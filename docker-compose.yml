@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ssm
+      POSTGRES_USER: ssm
+      POSTGRES_PASSWORD: ssm
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ssm
+      SPRING_DATASOURCE_USERNAME: ssm
+      SPRING_DATASOURCE_PASSWORD: ssm
+      SSM_STORAGE_BASEDIR: /data
+      SSM_BOOTSTRAP_ADMINEMAIL: admin@example.com
+      SSM_BOOTSTRAP_ADMINPASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - app_data:/data
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+  app_data:
