@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk>
+  <config-name>ssm</config-name>
   <device-config>
     <device-type>ajax</device-type>
   </device-config>
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
 </zk>

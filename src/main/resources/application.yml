@@ -13,6 +13,13 @@ spring:
       hibernate:
         format_sql: true
 
+zk:
+  zul-view-resolver-prefix: /zul
+  zul-view-resolver-suffix: .zhtml
+  resource-uri: /zkres
+  update-uri: /zkau
+  richlet-filter-mapping: "*.zhtml"
+
 ssm:
   storage:
     baseDir: data

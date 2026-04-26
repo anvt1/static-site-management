@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns:n="native">
+  <n:footer class="footer footer-transparent d-print-none">
+    <n:div class="container-xl">
+      <n:div class="row text-center align-items-center flex-row-reverse">
+        <n:div class="col-12 col-lg-auto mt-3 mt-lg-0">
+          <n:ul class="list-inline list-inline-dots mb-0">
+            <n:li class="list-inline-item">
+              Copyright © 2025 Static Site Manager. All rights reserved.
+            </n:li>
+          </n:ul>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:footer>
+</zk>

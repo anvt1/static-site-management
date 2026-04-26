@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns:n="native">
+  <n:div class="page-header d-print-none">
+    <n:div class="container-xl">
+      <n:div class="row g-2 align-items-center">
+        <n:div class="col">
+          <n:div class="page-pretitle">Administration</n:div>
+          <n:h2 class="page-title">Admin Panel</n:h2>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:div>
+  <n:div class="page-body">
+    <n:div class="container-xl">
+      <n:div class="row row-deck row-cards">
+        <n:div class="col-12">
+          <n:div class="card">
+            <n:div class="card-body">
+              <n:h3 class="card-title">About Admin Panel</n:h3>
+              <n:p class="text-secondary">Manage pending payments and approve or reject user transactions. Requires ROLE_ADMIN.</n:p>
+            </n:div>
+          </n:div>
+        </n:div>
+        <n:div class="col-12">
+          <n:div class="card">
+            <n:div class="card-header">
+              <n:h3 class="card-title">API Endpoints</n:h3>
+            </n:div>
+            <n:div class="card-body">
+              <n:p><n:code>GET  /api/admin/payments/pending</n:code> — list all pending payments.</n:p>
+              <n:p><n:code>POST /api/admin/payments/{txId}/approve</n:code> — approve a payment.</n:p>
+            </n:div>
+          </n:div>
+        </n:div>
+        <n:div class="col-12">
+          <n:div class="card">
+            <n:div class="card-header">
+              <n:h3 class="card-title">Pending Payments</n:h3>
+            </n:div>
+            <n:div class="card-body">
+              <n:div class="empty">
+                <n:p class="empty-title">No pending payments</n:p>
+                <n:p class="empty-subtitle text-secondary">All payment submissions are up to date.</n:p>
+              </n:div>
+            </n:div>
+          </n:div>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:div>
+</zk>

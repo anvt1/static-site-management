@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns:n="native">
+  <n:div class="page-header d-print-none">
+    <n:div class="container-xl">
+      <n:div class="row g-2 align-items-center">
+        <n:div class="col">
+          <n:div class="page-pretitle">Management</n:div>
+          <n:h2 class="page-title">My Sites</n:h2>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:div>
+  <n:div class="page-body">
+    <n:div class="container-xl">
+      <n:div class="row row-deck row-cards">
+        <n:div class="col-12">
+          <n:div class="card">
+            <n:div class="card-body">
+              <n:h3 class="card-title">About Sites</n:h3>
+              <n:p class="text-secondary">Deploy and manage your static websites. Upload a ZIP file to create a new deployment, then publish it to make it live.</n:p>
+            </n:div>
+          </n:div>
+        </n:div>
+        <n:div class="col-12">
+          <n:div class="card">
+            <n:div class="card-header">
+              <n:h3 class="card-title">API Endpoints</n:h3>
+            </n:div>
+            <n:div class="card-body">
+              <n:p><n:code>GET  /api/sites</n:code> — list all your sites.</n:p>
+              <n:p><n:code>POST /api/sites</n:code> — create a new site (JSON: {name}).</n:p>
+              <n:p><n:code>POST /api/sites/{siteId}/deployments/preview</n:code> — upload ZIP for preview.</n:p>
+              <n:p><n:code>POST /api/sites/{siteId}/deployments/{deploymentId}/publish</n:code> — publish deployment.</n:p>
+            </n:div>
+          </n:div>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:div>
+</zk>

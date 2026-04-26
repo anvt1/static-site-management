@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns:n="native">
+  <n:div class="page-header d-print-none">
+    <n:div class="container-xl">
+      <n:div class="row g-2 align-items-center">
+        <n:div class="col">
+          <n:div class="page-pretitle">Overview</n:div>
+          <n:h2 class="page-title">Dashboard</n:h2>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:div>
+  <n:div class="page-body">
+    <n:div class="container-xl">
+      <n:div class="row row-deck row-cards">
+        <n:div class="col-12">
+          <n:div class="card">
+            <n:div class="card-body">
+              <n:h3 class="card-title">Welcome to Static Site Manager</n:h3>
+              <n:p class="text-secondary">Deploy and manage your static websites. Track payments and manage deployments from here.</n:p>
+            </n:div>
+          </n:div>
+        </n:div>
+        <n:div class="col-sm-6 col-lg-4">
+          <n:div class="card">
+            <n:div class="card-body">
+              <n:div class="subheader">Section</n:div>
+              <n:div class="h3 mb-3">My Sites</n:div>
+              <n:a href="/?page=sites" class="btn btn-primary">Go to My Sites</n:a>
+            </n:div>
+          </n:div>
+        </n:div>
+        <n:div class="col-sm-6 col-lg-4">
+          <n:div class="card">
+            <n:div class="card-body">
+              <n:div class="subheader">Section</n:div>
+              <n:div class="h3 mb-3">Payments</n:div>
+              <n:a href="/?page=payments" class="btn btn-primary">Go to Payments</n:a>
+            </n:div>
+          </n:div>
+        </n:div>
+        <n:div class="col-sm-6 col-lg-4">
+          <n:div class="card">
+            <n:div class="card-body">
+              <n:div class="subheader">Section</n:div>
+              <n:div class="h3 mb-3">Admin Panel</n:div>
+              <n:a href="/?page=admin" class="btn btn-primary">Go to Admin</n:a>
+            </n:div>
+          </n:div>
+        </n:div>
+      </n:div>
+    </n:div>
+  </n:div>
+</zk>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:z="zul" xmlns:n="native">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Site Manager</title>
+    <link href="/dist/css/tabler.min.css" rel="stylesheet" />
+    <style>@import url("https://rsms.me/inter/inter.css");</style>
+  </head>
+  <body>
+    <script src="/dist/js/tabler-theme.min.js"></script>
+    <div class="page">
+      <z:include src="~./zul/layout/header-user.zul"/>
+      <z:include src="~./zul/layout/header-nav.zul"/>
+      <div class="page-wrapper">
+        <z:div viewModel="@id('vm') @init('com.atvo.ssm.vm.IndexVM')">
+          <z:include src="@load(vm.contentSrc)"/>
+        </z:div>
+        <z:include src="~./zul/layout/footer.zul"/>
+      </div>
+    </div>
+    <script src="/dist/js/tabler.min.js"></script>
+  </body>
+</html>
