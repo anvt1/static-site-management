@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A Spring Boot 3 web application for managing and deploying static websites. Users upload a ZIP archive, preview it, then publish. An admin can approve payments. The UI shell uses ZK Framework (`.zul` files); all business logic is exposed via REST APIs.
+A Spring Boot 3 web application for managing and deploying static websites. Users upload a ZIP archive, preview it, then publish. An admin can approve payments. The UI shell uses ZK Framework (`.zul` files) MVVM pattern.
 
 ## Tech Stack
 
@@ -24,12 +24,16 @@ src/main/java/com/atvo/ssm/
   model/           # JPA entities (UserAccount, Site, Deployment, DomainMapping, PaymentTransaction)
   repo/            # Spring Data repositories
   service/         # Business logic (ZipDeployService, StoragePaths, CurrentUserService, BootstrapAdmin)
+  vm/              # ZK ViewModels — MVVM pattern (IndexVM, …)
   web/             # REST controllers (SiteController, AuthController, AdminController, PaymentController)
 
 src/main/resources/
   application.yml            # Default (PostgreSQL)
   application-h2.yml         # Dev profile (H2 in-memory)
-  webapp/index.zul           # ZK landing page
+  web/zul/
+    index.zhtml              # ZK shell page (ZHTML + ZUL mix)
+    layout/                  # Shared layout fragments (header, footer)
+    pages/                   # Per-page ZUL fragments (home, sites, payments, admin)
 ```
 
 ## Running Locally
@@ -109,8 +113,9 @@ Sites are stored under `SSM_STORAGE_BASEDIR` using `StoragePaths`. Each site get
 
 - **Lombok** is used extensively — make sure your IDE has the Lombok plugin enabled.
 - **DDL** is `update` (auto-migrate on startup). Do not use this in production without review.
-- The `.zul` UI is a placeholder shell. All functional work happens through the REST API.
-- Security uses HTTP Basic auth (stateless). Session-based login is not wired up yet.
+- The UI follows the **ZK MVVM pattern**. Each page (`*.zul`) declares a ViewModel via `viewModel="@id('vm') @init('...')"`. The ViewModel calls the service layer directly — no REST calls from the frontend.
+- **ZK data binding** uses `@load`, `@save`, `@bind`, and `@command` annotations on ZUL components; ViewModels use `@Init`, `@Command`, and `@NotifyChange` from `org.zkoss.bind.annotation`.
+- **Authentication** uses ZK form-based login with a Spring Security session. HTTP Basic is only used for the REST endpoints under `/api/**`.
 - `BootstrapAdmin` runs on startup and seeds the admin account if it does not exist.
 
 ## Build

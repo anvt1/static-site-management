@@ -27,6 +27,7 @@ public class BootstrapAdmin {
         .email(adminEmail)
         .passwordHash(passwordEncoder.encode(adminPassword))
         .role("ROLE_ADMIN")
+        .emailVerified(true)
         .build();
       return userAccountRepo.save(admin);
     });

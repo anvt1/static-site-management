@@ -17,4 +17,9 @@ public class ZkConfig {
   public String login() {
     return "forward:~./zul/login.zhtml";
   }
+
+  @GetMapping("/register")
+  public String register() {
+    return "forward:~./zul/register.zhtml";
+  }
 }

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" xmlns:z="zul" xmlns:n="native" xmlns:ca="client/attribute">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Create Account - Static Site Manager</title>
+    <link href="/dist/css/tabler.min.css" rel="stylesheet" />
+    <style>@import url("https://rsms.me/inter/inter.css");</style>
+  </head>
+  <body>
+    <script src="/dist/js/tabler-theme.min.js"></script>
+    <div class="page page-center">
+      <div class="container container-tight py-4">
+
+        <div class="text-center mb-4">
+          <n:span class="navbar-brand-image">
+            <n:strong class="fs-2 text-primary">SSM</n:strong>
+          </n:span>
+        </div>
+
+        <z:div viewModel="@id('vm') @init('com.atvo.ssm.vm.RegisterVM')">
+
+          <!-- Success state -->
+          <z:div visible="@load(vm.registered)" class="card card-md">
+            <div class="card-body text-center py-5">
+              <n:div class="mb-3 text-success">
+                <n:svg width="48" height="48" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="icon icon-lg">
+                  <n:path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                  <n:path d="M9 12l2 2l4 -4" />
+                </n:svg>
+              </n:div>
+              <n:h3 class="card-title">Registration successful!</n:h3>
+              <n:p class="text-secondary">
+                A verification link has been sent. Please check your server logs to find the
+                verification URL and click it to activate your account.
+              </n:p>
+              <n:a href="/login" class="btn btn-primary mt-3">Go to Sign In</n:a>
+            </div>
+          </z:div>
+
+          <!-- Registration form -->
+          <z:div visible="@load(!vm.registered)" class="card card-md">
+            <div class="card-body">
+              <n:h2 class="card-title text-center mb-4">Create new account</n:h2>
+
+              <!-- Error alert -->
+              <z:div visible="@load(!empty vm.errorMessage)"
+                class="alert alert-danger alert-dismissible mb-3" ca:role="alert">
+                <z:label value="@load(vm.errorMessage)" />
+              </z:div>
+
+              <!-- Email -->
+              <n:div class="mb-3">
+                <n:label class="form-label">Email address</n:label>
+                <z:textbox type="email" sclass="form-control" placeholder="your@email.com"
+                  value="@bind(vm.email)" />
+              </n:div>
+
+              <!-- Password -->
+              <n:div class="mb-3">
+                <n:label class="form-label">Password</n:label>
+                <z:textbox type="password" sclass="form-control" placeholder="Min. 8 characters"
+                  value="@bind(vm.password)" />
+              </n:div>
+
+              <!-- Confirm Password -->
+              <n:div class="mb-3">
+                <n:label class="form-label">Confirm password</n:label>
+                <z:textbox type="password" sclass="form-control" placeholder="Repeat password"
+                  value="@bind(vm.confirmPassword)" />
+              </n:div>
+
+              <n:div class="form-footer">
+                <z:button label="Create account" sclass="btn btn-primary w-100"
+                  onClick="@command('register')" />
+              </n:div>
+            </div>
+          </z:div>
+
+        </z:div>
+
+        <n:div class="text-center text-secondary mt-3">
+          Already have an account? <n:a href="/login">Sign in</n:a>
+        </n:div>
+
+      </div>
+    </div>
+    <script src="/dist/js/tabler.min.js"></script>
+  </body>
+</html>

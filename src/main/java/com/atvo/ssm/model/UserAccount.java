@@ -25,4 +25,11 @@ public class UserAccount {
 
   @Column(nullable = false)
   private String role; // ROLE_USER, ROLE_ADMIN
+
+  @Builder.Default
+  @Column(nullable = false, columnDefinition = "boolean default false")
+  private boolean emailVerified = false;
+
+  @Column(unique = true)
+  private String verificationToken;
 }

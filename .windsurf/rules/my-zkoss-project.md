@@ -92,3 +92,5 @@ auth.requestMatchers(new AndRequestMatcher(
 ```
 
 This covers the FORWARD created by `return "forward:~./zul/<page>.zhtml"`.
+
+ZK <include> paths inside ZHTML must use ~./ prefix (e.g. ~./zul/layout/header-user.zul) to resolve classpath web resources

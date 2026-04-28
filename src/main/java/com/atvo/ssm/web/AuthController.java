@@ -1,35 +1,39 @@
 package com.atvo.ssm.web;
 
-import com.atvo.ssm.model.UserAccount;
-import com.atvo.ssm.repo.UserAccountRepo;
+import com.atvo.ssm.service.RegistrationService;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequiredArgsConstructor
 @Validated
 public class AuthController {
-  private final UserAccountRepo userAccountRepo;
-  private final PasswordEncoder passwordEncoder;
+  private final RegistrationService registrationService;
 
   @PostMapping("/register")
   public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
-    if (userAccountRepo.findByEmail(req.getEmail()).isPresent()) {
-      return ResponseEntity.badRequest().body("Email already used");
+    try {
+      registrationService.register(req.getEmail(), req.getPassword());
+      return ResponseEntity.ok().build();
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
     }
-    UserAccount user = UserAccount.builder()
-      .email(req.getEmail())
-      .passwordHash(passwordEncoder.encode(req.getPassword()))
-      .role("ROLE_USER")
-      .build();
-    userAccountRepo.save(user);
-    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/verify")
+  public RedirectView verify(@RequestParam String token) {
+    try {
+      registrationService.verifyEmail(token);
+      return new RedirectView("/login?verified");
+    } catch (IllegalArgumentException e) {
+      return new RedirectView("/login?error");
+    }
   }
 
   @Data

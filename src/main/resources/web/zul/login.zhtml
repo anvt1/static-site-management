@@ -14,11 +14,15 @@
       button { width: 100%; padding: .6rem; background: #4a90d9; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
       button:hover { background: #357ab8; }
       .error { color: #c0392b; background: #fdecea; border: 1px solid #f5c6cb; border-radius: 4px; padding: .5rem .75rem; margin-bottom: 1rem; font-size: .875rem; }
+      .success { color: #155724; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 4px; padding: .5rem .75rem; margin-bottom: 1rem; font-size: .875rem; }
+      .register-link { margin-top: .75rem; text-align: center; font-size: .875rem; color: #555; }
     </style>
   </head>
   <body>
     <div class="card">
       <h2>Sign In</h2>
+      <n:p n:if="${param.verified}" class="success">Email verified! Your account is now active. Please sign in.</n:p>
+      <n:p n:if="${param.disabled}" class="error">Your email address has not been verified. Please check your server logs for the verification link.</n:p>
       <n:p n:if="${param.error}" class="error">Invalid email or password. Please try again.</n:p>
       <n:form action="/login" method="POST">
         <label>Email</label>
@@ -27,6 +31,7 @@
         <n:input type="password" name="password" placeholder="Password" required="required" />
         <n:button type="submit">Sign In</n:button>
       </n:form>
+      <n:div class="register-link">Don't have an account? <n:a href="/register">Create one</n:a></n:div>
     </div>
   </body>
 </html>

@@ -1,18 +1,25 @@
 package com.atvo.ssm.config;
 
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.DispatcherTypeRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -57,6 +64,8 @@ public class SecurityConfig {
         auth.requestMatchers(
           AntPathRequestMatcher.antMatcher("/login"),
           AntPathRequestMatcher.antMatcher("/logout"),
+          AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/register"),
+          AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/verify"),
           AntPathRequestMatcher.antMatcher("/register"),
           AntPathRequestMatcher.antMatcher("/api/public/**")
         ).permitAll();
@@ -73,7 +82,14 @@ public class SecurityConfig {
       .formLogin(form -> form
         .loginPage("/login")
         .defaultSuccessUrl("/", true)
-        .failureUrl("/login?error")
+        .failureHandler(new SimpleUrlAuthenticationFailureHandler() {
+          @Override
+          public void onAuthenticationFailure(HttpServletRequest req,
+            HttpServletResponse res, AuthenticationException ex) throws IOException {
+            String url = (ex instanceof DisabledException) ? "/login?disabled" : "/login?error";
+            getRedirectStrategy().sendRedirect(req, res, url);
+          }
+        })
       )
       .logout(logout -> logout
         .logoutUrl("/logout")
