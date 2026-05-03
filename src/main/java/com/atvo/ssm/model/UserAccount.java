@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "user_accounts")
 @Getter
@@ -23,8 +26,9 @@ public class UserAccount {
   @Column(nullable = false)
   private String passwordHash;
 
-  @Column(nullable = false)
-  private String role; // ROLE_USER, ROLE_ADMIN
+  @Builder.Default
+  @Column(nullable = false, columnDefinition = "varchar(20) default 'ACTIVE'")
+  private String status = "ACTIVE"; // ACTIVE, SUSPENDED
 
   @Builder.Default
   @Column(nullable = false, columnDefinition = "boolean default false")
@@ -32,4 +36,31 @@ public class UserAccount {
 
   @Column(unique = true)
   private String verificationToken;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+    name = "user_roles",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id")
+  )
+  @Builder.Default
+  @JsonIgnore
+  private Set<Role> roles = new HashSet<>();
+
+  @Column(nullable = false)
+  @Builder.Default
+  private java.time.Instant createdAt = java.time.Instant.now();
+
+  @Deprecated
+  public String getRole() {
+    return roles.isEmpty() ? null : "ROLE_" + roles.iterator().next().getCode();
+  }
+
+  public boolean hasRole(String roleCode) {
+    return roles.stream().anyMatch(r -> r.getCode().equals(roleCode));
+  }
+
+  public boolean isAdmin() {
+    return hasRole("ADMIN");
+  }
 }

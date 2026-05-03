@@ -5,6 +5,7 @@ import com.atvo.ssm.model.Site;
 import com.atvo.ssm.model.UserAccount;
 import com.atvo.ssm.repo.DeploymentRepo;
 import com.atvo.ssm.repo.SiteRepo;
+import com.atvo.ssm.service.AuthorizationService;
 import com.atvo.ssm.service.CurrentUserService;
 import com.atvo.ssm.service.ZipDeployService;
 import jakarta.validation.constraints.NotBlank;
@@ -28,16 +29,19 @@ public class SiteController {
   private final DeploymentRepo deploymentRepo;
   private final CurrentUserService currentUserService;
   private final ZipDeployService zipDeployService;
+  private final AuthorizationService authorizationService;
 
   @GetMapping("/sites")
   public List<Site> mySites() {
     UserAccount user = currentUserService.requireCurrentUser();
+    authorizationService.requirePermission(user, "SITE_READ_OWN");
     return siteRepo.findByOwner(user);
   }
 
   @PostMapping("/sites")
   public Site createSite(@RequestBody CreateSiteRequest req) {
     UserAccount user = currentUserService.requireCurrentUser();
+    authorizationService.requirePermission(user, "SITE_CREATE");
     Site site = Site.builder()
       .owner(user)
       .name(req.getName())
@@ -51,14 +55,18 @@ public class SiteController {
   @PostMapping("/sites/{siteId}/deployments/preview")
   public Deployment uploadZipPreview(@PathVariable long siteId, @RequestParam("file") MultipartFile file) throws IOException {
     UserAccount user = currentUserService.requireCurrentUser();
-    Site site = siteRepo.findByIdAndOwner(siteId, user).orElseThrow();
+    Site site = siteRepo.findById(siteId).orElseThrow();
+    authorizationService.requireSiteOwnerOrAdmin(user, site);
+    authorizationService.requirePermission(user, "SITE_PUBLISH_OWN");
     return zipDeployService.createPreviewDeployment(site, file);
   }
 
   @PostMapping("/sites/{siteId}/deployments/{deploymentId}/publish")
   public ResponseEntity<?> publish(@PathVariable long siteId, @PathVariable long deploymentId) throws IOException {
     UserAccount user = currentUserService.requireCurrentUser();
-    Site site = siteRepo.findByIdAndOwner(siteId, user).orElseThrow();
+    Site site = siteRepo.findById(siteId).orElseThrow();
+    authorizationService.requireSiteOwnerOrAdmin(user, site);
+    authorizationService.requirePermission(user, "SITE_PUBLISH_OWN");
     Deployment deployment = deploymentRepo.findById(deploymentId).orElseThrow();
     if (!deployment.getSite().getId().equals(site.getId())) {
       return ResponseEntity.badRequest().body("Deployment not in site");
@@ -72,7 +80,9 @@ public class SiteController {
   @GetMapping("/sites/{siteId}/deployments")
   public List<Deployment> listDeployments(@PathVariable long siteId) {
     UserAccount user = currentUserService.requireCurrentUser();
-    Site site = siteRepo.findByIdAndOwner(siteId, user).orElseThrow();
+    Site site = siteRepo.findById(siteId).orElseThrow();
+    authorizationService.requireSiteOwnerOrAdmin(user, site);
+    authorizationService.requirePermission(user, "SITE_READ_OWN");
     return deploymentRepo.findBySiteOrderByCreatedAtDesc(site);
   }
 

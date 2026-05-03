@@ -1,6 +1,8 @@
 package com.atvo.ssm.service;
 
+import com.atvo.ssm.model.Role;
 import com.atvo.ssm.model.UserAccount;
+import com.atvo.ssm.repo.RoleRepo;
 import com.atvo.ssm.repo.UserAccountRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -16,6 +19,7 @@ import java.util.UUID;
 public class RegistrationService {
 
   private final UserAccountRepo userAccountRepo;
+  private final RoleRepo roleRepo;
   private final PasswordEncoder passwordEncoder;
 
   @Transactional
@@ -24,14 +28,18 @@ public class RegistrationService {
       throw new IllegalArgumentException("Email already in use");
     }
 
+    Role clientOwnerRole = roleRepo.findByCode("CLIENT_OWNER")
+      .orElseThrow(() -> new IllegalStateException("CLIENT_OWNER role not found"));
+
     String token = UUID.randomUUID().toString();
 
     UserAccount user = UserAccount.builder()
       .email(email)
       .passwordHash(passwordEncoder.encode(password))
-      .role("ROLE_USER")
+      .status("ACTIVE")
       .emailVerified(false)
       .verificationToken(token)
+      .roles(Set.of(clientOwnerRole))
       .build();
 
     userAccountRepo.save(user);

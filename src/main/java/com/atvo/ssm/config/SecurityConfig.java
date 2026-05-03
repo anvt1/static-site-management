@@ -76,7 +76,8 @@ public class SecurityConfig {
         auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/img/**")).permitAll();
         auth.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/dist/**")).permitAll();
         // protected
-        auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/admin/**")).hasRole("ADMIN");
+        auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/admin/**")).hasAnyRole("ADMIN", "SUPPORT");
+        auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/sites/**")).authenticated();
         auth.anyRequest().authenticated();
       })
       .formLogin(form -> form
